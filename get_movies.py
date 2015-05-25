@@ -11,7 +11,7 @@ def encode(text):
 
 
 # Let's write the program to collect data for the first 10 pages for a give year
-years = ['1979', '1978', '1977', '1976', '1975']
+years = ['1974', '1973', '1972', '1971', '1970']
 
 for year in years:
     # Open the file to write out the movies
