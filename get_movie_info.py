@@ -12,9 +12,11 @@ import random
 import time
 import io
 
-# Read in the file with movie names:
+# Year
+movie_year = '2010'
 
-myfile = open("Movies_2014.txt", "r")
+# Read in the file with movie names:
+myfile = open("Movies_"+movie_year+".txt", "r")
 a = myfile.readlines()
 
 movies = []
@@ -23,15 +25,15 @@ for i in range(len(a)):
         a[i] = (a[i]).strip()
         movies.append(a[i].replace(" ", "+"))
 
-movie_year = '2014'
-movie_file = open("Movie_listings_2014_all.csv", "w")
 
+movie_file = open("Movie_listings_"+movie_year+"_all.csv", "w")
+missing_movies = open("MissingMovies"+movie_year+".txt", "w")
 def encode(text):
     return text.encode('utf-8')
 
 count = 0
 #for movie_name in movies:
-for i in range(0,300):
+for i in range(0,len(movies)):
     movie_name = movies[i]
     count += 1
     print "Doing movie no: ", count, "Movie: ", movie_name
@@ -46,10 +48,10 @@ for i in range(0,300):
 
     # Write the movie information to file
     if movie_json['Response'] == 'False':
-        movie_file.write("{name:s},,,,,,,,,,,,\n".format(name=movie_name))
+        missing_movies.write("{name:s}\n".format(name=movie_name))
     else:
-        title = encode(movie_json["Title"])
-        year = movie_json["Year"]
+        title = encode(movie_json["Title"]).replace("," ," ")
+        year = encode(movie_json["Year"])
         released = movie_json["Released"]
         language = (movie_json["Language"].split(","))[0]
         rated = movie_json["Rated"]
@@ -71,6 +73,7 @@ for i in range(0,300):
     time.sleep(wait_time)
 
 movie_file.close()
+missing_movies.close()
 
 
 
