@@ -13,7 +13,7 @@ import time
 import io
 
 # Year
-movie_year = '2006'
+movie_year = '2004'
 
 # Read in the file with movie names:
 myfile = open("Movies_"+movie_year+".txt", "r")
@@ -43,7 +43,11 @@ for i in range(0,len(movies)):
     response = urllib2.Request("http://www.omdbapi.com/?t="+movie_name+"&y="+movie_year+"&plot=short&r=json")
     opener = urllib2.build_opener()
     f = opener.open(response)
-    movie_json = simplejson.load(f)
+    try:
+        movie_json = simplejson.load(f)
+    except simplejson.JSONDecodeError:
+        continue
+
     #print movie_json
 
     # Write the movie information to file
@@ -68,7 +72,7 @@ for i in range(0,len(movies)):
             .format(title=title, yr=year, mn=released, lang=language, time=runtime, writ=writer,
                     dir=director, rate=imdb_rating, rated = rated, id=imdb_ID, vote=imdbVotes, awrds=awards, gen=genre))
     # Set up random wait:
-    wait_time = random.randint(1,5)
+    wait_time = random.randint(0,1)
     print "Waiting for...", wait_time
     time.sleep(wait_time)
 
